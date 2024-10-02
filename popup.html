@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="./style.css" rel="stylesheet">
+</head>
+<body>
+    <div id="main_container">
+        
+        <div id="form_container">
+
+            <div id="input_container">
+            
+                <div id="date_container">
+                    <div>
+                        <label for="from_date">From:</label>
+                        <input type="date" name="from_date" id="from_date">
+                        <button id="today_frodate">Today</button>
+                    </div>
+                    <div>
+                        <label for="to_date">To:</label>
+                        <input type="date" name="to_date" id="to_date"> 
+                        <button id="today_todate">Today</button>
+                    </div>
+                </div>
+            
+                <div id="include_confirm">
+                    <label for="includedate">Include the end date?</label>
+                    <input type="checkbox" name="includedate" id="includedate"> 
+                </div>
+
+            </div>
+
+            <button id="submit">Submit</button>
+
+        </div>
+
+        <div id="answer"></div>
+
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>

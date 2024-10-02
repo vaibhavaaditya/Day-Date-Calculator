@@ -1,0 +1,112 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+
+body{
+    font-family: "Inter", sans-serif;
+    width: 27rem;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border: solid rgb(59, 59, 59) 7px;
+    border-image: radial-gradient(circle, rgb(59, 59, 59), rgb(159, 159, 159)) 1;
+    background: white;
+    background: rgb(245, 245, 245);
+    font-size: 1rem;
+}
+
+#main_container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    gap: 30px;
+    align-items: center;
+}
+
+#date_container button{
+    border: none;
+    background-color: white;
+    background: rgb(245, 245, 245);
+    font-size: 1rem;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#submit{
+    border: none;
+    width: 100px;
+    padding: 10px;
+    background: rgb(59, 59, 59);
+    color: white;
+    font-size: 1rem;
+    font-weight: 400;
+    border-radius: 25px;
+    align-self: center;
+    cursor: pointer;
+}
+
+#form_container{
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+#form_container label{
+    font-size: 1rem;
+}
+
+#date_container label{
+    font-weight: bold;
+}
+
+#input_container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+#date_container{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+#date_container > div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+span{
+    font-weight: bold;
+    font-size: 1.35rem;
+}
+
+#answer{
+    width: 27rem;
+    text-align: center;
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.answer_done{
+    background-color: rgb(168, 255, 190);
+    border-top: green 2px solid;
+    border-bottom: green 2px solid;
+}
+
+
+.answer_error{
+    background-color: rgb(255, 200, 163);
+    border-top: red 2px solid;
+    border-bottom: red 2px solid;
+}
+
+
