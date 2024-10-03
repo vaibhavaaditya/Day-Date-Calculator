@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Dates and Days Calculator",
+    "name": "Days and Dates Calculator",
     "version": "1.0.1",
     "description": "A tool that lets you quickly find out the number of days between two dates",
     "icons":{
