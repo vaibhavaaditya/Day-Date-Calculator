@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style_days.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Days page</title>
+  </head>
+  <body>
+    <div id="ext_container">
+      <div id="title">Days & Dates Calculator</div>
+
+      <div id="day_date_tabs">
+        <div id="dates_mode" class="mode_unselected">Dates</div>
+        <div id="days_mode" class="mode_selected">Days</div>
+      </div>
+
+      <div id="days_form_container">
+        <div id="date_select">
+          <div id="from_date_container">
+            <label for="from_date">From:</label>
+            <input type="date" name="from_date" id="from_date" />
+            <button id="today_frodate">Today</button>
+          </div>
+
+          <div id="days_container">
+            <label for="add_or_sub">Add/Subtract:</label>
+            <select id="add_or_sub">
+              <option value="add">(+) Add</option>
+              <option value="sub">(-) Subtract</option>
+            </select>
+          </div>
+
+          <div id="num_days">
+            <label for="add_sub_days">Add/Subtract:</label>
+            <input type="number" name="add_sub_days" id="add_sub_days" />
+          </div>
+        </div>
+
+        <div id="form_submit_container">
+          <div id="preferences">
+            <div>
+              <label for="workday">Count work days only?</label>
+              <input type="checkbox" name="workday" id="workday" />
+            </div>
+          </div>
+          <div id="submit_container">
+            <button id="submit">Submit</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="result_container">
+        <p></p>
+      </div>
+    </div>
+    <script src="popup_days.js"></script>
+  </body>
+</html>

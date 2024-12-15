@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "Days and Dates Calculator",
-    "version": "1.0.1",
-    "description": "A tool that lets you quickly find out the number of days between two dates",
+    "version": "2.0.0",
+    "description": "A calendar math tool that lets you find the number of days between two dates and finding a date based on the given number of days",
     "icons":{
         "128": "icons/icon128.png",
         "48": "icons/icon48.png",
@@ -11,6 +11,6 @@
     },
     "action": {
         "default_icon": "icons/icon16.png",
-        "default_popup": "popup.html"
+        "default_popup": "popup_dates.html"
     }
 }
