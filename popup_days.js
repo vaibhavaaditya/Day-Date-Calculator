@@ -37,7 +37,7 @@ document.getElementById('submit').addEventListener('click', () => {
     console.log(typeof (fromDate));
     console.log(fromDate.value);
     const workDay = document.getElementById('workday');
-    let resultDate = new Date();
+    let resultDate = new Date(fromDate);
     let resultDateWorkDay = new Date();
     let numWeekendDays = 0;
     let froDateIdx = fromDate.getDay();
@@ -88,6 +88,7 @@ document.getElementById('submit').addEventListener('click', () => {
         else {
             if (addOrSub == 'add') {
                 resultDate.setDate(fromDate.getDate() + numDaysInput);
+                
             }
             else {
                 resultDate.setDate(fromDate.getDate() - numDaysInput);
