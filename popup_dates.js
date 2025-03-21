@@ -23,7 +23,7 @@ document.getElementById('submit').addEventListener('click', () => {
 
     const includedate = document.getElementById('includedate');
     const bodyElement = document.body;
-    bodyElement.style.height = '390px';
+    bodyElement.style.height = '350px';
 
     if (fromDateStr == '' || toDateStr == '') {
         const ansElement = document.getElementById('result_container');

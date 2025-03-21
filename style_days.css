@@ -62,7 +62,7 @@ body{
     flex-direction: column;
     width: 505px;
     height: 217px;
-    background-color: rgba(217, 217, 217, 0.2);
+    /* background-color: rgba(217, 217, 217, 0.2); */
     border: #777777 1px solid;
     border-top: #777777 1px solid;
     border-left: #777777 1px solid;

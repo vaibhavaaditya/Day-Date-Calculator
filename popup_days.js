@@ -42,7 +42,7 @@ document.getElementById('submit').addEventListener('click', () => {
     let numWeekendDays = 0;
     let froDateIdx = fromDate.getDay();
 
-    bodyElement.style.height = '390px';
+    bodyElement.style.height = '350px';
 
     if (fromDateStr == '' || addOrSub == '' || numDaysInput == '' || numDaysInput <= 0 || isNaN(Number(numDaysInput))) {
         const ansElement = document.getElementById('result_container');
@@ -88,7 +88,7 @@ document.getElementById('submit').addEventListener('click', () => {
         else {
             if (addOrSub == 'add') {
                 resultDate.setDate(fromDate.getDate() + numDaysInput);
-                
+
             }
             else {
                 resultDate.setDate(fromDate.getDate() - numDaysInput);
