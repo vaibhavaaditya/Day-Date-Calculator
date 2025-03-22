@@ -80,9 +80,9 @@ document.getElementById('submit').addEventListener('click', () => {
             const workdayDateYear = workdayDate.getFullYear();
             const workdayDateMonth = String(workdayDate.getMonth() + 1).padStart(2, '0');
             const workdayDateDay = String(workdayDate.getDate());
-            const suffix = (workdayDateDay % 10 === 1 && workdayDateDay !== 11) ? 'st' :
-                (workdayDateDay % 10 === 2 && workdayDateDay !== 12) ? 'nd' :
-                    (workdayDateDay % 10 === 3 && workdayDateDay !== 13) ? 'rd' : 'th';
+            const suffix = (workdayDateDay % 10 === 1 && workdayDateDay !== "11") ? 'st' :
+                (workdayDateDay % 10 === 2 && workdayDateDay !== "12") ? 'nd' :
+                    (workdayDateDay % 10 === 3 && workdayDateDay !== "13") ? 'rd' : 'th';
             ansElement.innerHTML = `<span>Result:</span> &nbsp; ${workdayDateDay} <sup> ${suffix} </sup> &nbsp; ${months[workdayDateMonth - 1]}  ${workdayDateYear} `;
         }
         else {
@@ -97,9 +97,9 @@ document.getElementById('submit').addEventListener('click', () => {
             const resultDateYear = resultDate.getFullYear();
             const resultDateMonth = String(resultDate.getMonth() + 1).padStart(2, '0');
             const resultDateDay = String(resultDate.getDate());
-            const suffix = (resultDateDay % 10 === 1 && resultDateDay !== 11) ? 'st' :
-                (resultDateDay % 10 === 2 && resultDateDay !== 12) ? 'nd' :
-                    (resultDateDay % 10 === 3 && resultDateDay !== 13) ? 'rd' : 'th';
+            const suffix = (resultDateDay % 10 === 1 && resultDateDay !== "11") ? 'st' :
+                (resultDateDay % 10 === 2 && resultDateDay !== "12") ? 'nd' :
+                    (resultDateDay % 10 === 3 && resultDateDay !== "13") ? 'rd' : 'th';
             ansElement.innerHTML = `<span>Result:</span> &nbsp; ${resultDateDay} <sup> ${suffix} </sup> &nbsp; ${months[resultDateMonth - 1]}  ${resultDateYear} `;
         }
 
