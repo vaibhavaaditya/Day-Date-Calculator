@@ -1,0 +1,301 @@
+/* --- Design System: CSS Variables --- */
+:root {
+    --font-family: 'Inter', sans-serif;
+    --primary-color: #007aff;
+    --primary-color-light: #e6f2ff;
+    --success-color: #34c759;
+    --success-color-light: #eaf9ed;
+    --error-color: #ff3b30;
+    --error-color-light: #ffebeb;
+    --bg-color: #f8f9fa;
+    --container-bg: #ffffff;
+    --border-color: #dee2e6;
+    --text-color: #212529;
+    --text-color-muted: #6c757d;
+    --border-radius: 6px;
+    --spacing-unit: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 514px;
+    font-family: var(--font-family);
+    font-size: 15px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: var(--spacing-unit);
+    transition: height 0.25s ease-in-out;
+}
+
+#ext_container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--spacing-unit);
+}
+
+/* --- Tabs --- */
+#day_date_tabs {
+    display: flex;
+}
+
+.tab_button{
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    align-items: center;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    position: relative;
+}
+
+.tab_button:hover{
+    color: var(--primary-color);
+}
+
+.mode_selected {
+    color: var(--primary-color);
+    cursor: default;
+}
+
+.mode_selected::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+}
+
+.mode_unselected{
+    color: var(--text-color-muted);
+}
+
+/* --- Forms --- */
+.form_container{
+    display: flex;
+    flex-direction: column; /* Stack the rows vertically */
+    gap: calc(var(--spacing-unit) * 2);
+    width: 100%;
+    min-height: 217px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--container-bg);
+    padding: calc(var(--spacing-unit) * 2);
+}
+
+.form_row {
+    display: flex;
+    align-items: flex-start; /* Align items to the top for consistent label position */
+}
+
+.form_row_inputs {
+    justify-content: space-evenly;
+}
+
+.form_row_actions {
+    margin-top: 20px;
+    justify-content: space-around; /* Push items inward from the edges */
+    align-items: center; /* Vertically center the preferences and submit button */
+}
+
+.submit_container{
+    /* Styles are now handled by the parent .form_row_actions */
+}
+
+.submit_container > button{
+    background-color: var(--primary-color);
+    font-family: var(--font-family);
+    font-weight: bold;
+    font-size: 15px;
+    color: white;
+    width: 100px;
+    height: 30px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.submit_container > button:hover {
+    background-color: #0056b3;
+}
+.submit_container > button:active {
+    transform: scale(0.98);
+}
+
+.preferences{
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-unit);
+    justify-content: center;
+    min-height: 50px; /* Stabilize height between 1 and 2 checkboxes */
+}
+
+.toggle_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 220px; /* Container width to enforce alignment */
+}
+
+.toggle_label_text {
+    width: 160px; /* Fixed width for the text label */
+    text-align: left;
+}
+
+/* The switch - a label that acts as a container */
+.toggle_switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+/* Hide default HTML checkbox */
+.toggle_switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.days_preferences {
+    /* This class is now just for targeting if needed, alignment is handled by .preferences */
+}
+
+.input_group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-unit);
+    /* width: 140px; */ /* Width is no longer needed, flexbox will handle it */
+}
+
+.input_group > label {
+    font-weight: bold;
+}
+
+input[type="date"], input[type="number"], select {
+    height: 30px;
+    width: 125px;
+    font-family: var(--font-family);
+    color: var(--text-color-muted);
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--container-bg);
+    padding: 0 5px;
+}
+
+input[type="checkbox"]:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input[type="checkbox"]:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--primary-color-light);
+    border-color: var(--primary-color);
+}
+
+.today_btn {
+    background-color: inherit;
+    border: none;
+    text-decoration: underline;
+    font-size: 15px;
+    cursor: pointer;
+    color: var(--primary-color);
+    padding-top: var(--spacing-unit);
+}
+
+/* --- Result Container --- */
+#result_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    text-align: center;
+    white-space: nowrap; /* Prevent result from wrapping to a new line */
+    width: 100%;
+    min-height: 90px;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border: 1px solid transparent;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: top;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#result_container.hidden {
+    opacity: 0;
+    transform: scaleY(0);
+    min-height: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.answer_error{
+    background-color: var(--error-color-light);
+    border-color: var(--error-color);
+    font-weight: 600;
+    color: var(--error-color);
+}
+
+.answer_done{
+    background-color: var(--success-color-light);
+    border-color: var(--success-color);
+}
+
+.answer_done span{
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* Utility */
+.hidden {
+    display: none;
+}

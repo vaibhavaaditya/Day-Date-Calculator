@@ -1,0 +1,135 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // --- DOM Element Caching ---
+    const datesModeBtn = document.getElementById('dates_mode_btn');
+    const daysModeBtn = document.getElementById('days_mode_btn');
+    const datesForm = document.getElementById('dates_form_container');
+    const daysForm = document.getElementById('days_form_container');
+    const resultContainer = document.getElementById('result_container');
+
+    // --- Tab Switching Logic ---
+    const switchTab = (activeTab) => {
+        const isDatesMode = activeTab === 'dates';
+
+        // Toggle tab styles
+        datesModeBtn.classList.toggle('mode_selected', isDatesMode);
+        datesModeBtn.classList.toggle('mode_unselected', !isDatesMode);
+        daysModeBtn.classList.toggle('mode_selected', !isDatesMode);
+        daysModeBtn.classList.toggle('mode_unselected', isDatesMode);
+
+        // Toggle form visibility
+        datesForm.classList.toggle('hidden', !isDatesMode);
+        daysForm.classList.toggle('hidden', isDatesMode);
+
+        // Hide result on tab switch
+        resultContainer.classList.add('hidden');
+    };
+
+    datesModeBtn.addEventListener('click', () => switchTab('dates'));
+    daysModeBtn.addEventListener('click', () => switchTab('days'));
+
+    // --- Helper Functions ---
+    const getTodayString = () => new Date().toISOString().slice(0, 10);
+
+    const displayResult = (message, isError = false) => {
+        resultContainer.innerHTML = message;
+        resultContainer.className = 'result_container'; // Reset classes
+        resultContainer.classList.add(isError ? 'answer_error' : 'answer_done');
+        resultContainer.classList.remove('hidden');
+    };
+
+    const formatDateWithSuffix = (date) => {
+        const day = date.getDate();
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear();
+        const suffix = (day % 10 === 1 && day !== 11) ? 'st' :
+                       (day % 10 === 2 && day !== 12) ? 'nd' :
+                       (day % 10 === 3 && day !== 13) ? 'rd' : 'th';
+        return `<span>Result:</span> &nbsp; ${day}<sup>${suffix}</sup> &nbsp; ${month} ${year}`;
+    };
+
+    // --- Universal "Today" Button Logic ---
+    document.querySelectorAll('.today_btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const targetInputId = e.target.dataset.target;
+            const targetInput = document.getElementById(targetInputId);
+            if (targetInput) {
+                targetInput.value = getTodayString();
+            }
+        });
+    });
+
+    // --- "Dates" Mode: Calculate Days Between Dates ---
+    const datesSubmitBtn = document.getElementById('dates_submit');
+    datesSubmitBtn.addEventListener('click', () => {
+        const fromDateStr = document.getElementById('dates_from_date').value;
+        const toDateStr = document.getElementById('to_date').value;
+        const includeEndDate = document.getElementById('includedate').checked;
+        const countWorkdays = document.getElementById('dates_workday').checked;
+
+        if (!fromDateStr || !toDateStr) {
+            return displayResult('Please provide both a "From" and "To" date.', true);
+        }
+
+        let fromDate = new Date(fromDateStr);
+        const toDate = new Date(toDateStr);
+
+        if (fromDate > toDate) {
+            return displayResult('"From" date cannot be after "To" date.', true);
+        }
+
+        let dayCount = 0;
+        // Create a new date object for iteration to avoid modifying the original
+        let currentDate = new Date(fromDate.valueOf());
+
+        // Loop through the days, excluding the end date for now
+        while (currentDate < toDate) {
+            const dayOfWeek = currentDate.getDay(); // 0=Sun, 6=Sat
+            if (!countWorkdays || (dayOfWeek !== 0 && dayOfWeek !== 6)) {
+                dayCount++;
+            }
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        // Handle "include end date" separately
+        if (includeEndDate) {
+            const endDayOfWeek = toDate.getDay();
+            if (!countWorkdays || (endDayOfWeek !== 0 && endDayOfWeek !== 6)) {
+                dayCount++;
+            }
+        }
+
+        const dayWord = dayCount === 1 ? 'day' : 'days';
+        displayResult(`<span>Result:</span> &nbsp; ${dayCount} ${dayWord}.`);
+    });
+
+    // --- "Days" Mode: Add/Subtract Days ---
+    const daysSubmitBtn = document.getElementById('days_submit');
+    daysSubmitBtn.addEventListener('click', () => {
+        const fromDateStr = document.getElementById('days_from_date').value;
+        const addOrSub = document.getElementById('add_or_sub').value;
+        const numDays = parseInt(document.getElementById('add_sub_days').value, 10);
+        const countWorkdays = document.getElementById('days_workday').checked;
+
+        if (!fromDateStr || !numDays || numDays <= 0) {
+            return displayResult('Please provide a valid date and number of days.', true);
+        }
+
+        let resultDate = new Date(fromDateStr);
+        const dayIncrement = (addOrSub === 'add') ? 1 : -1;
+
+        if (countWorkdays) {
+            let daysCounter = numDays;
+            while (daysCounter > 0) {
+                resultDate.setDate(resultDate.getDate() + dayIncrement);
+                const dayOfWeek = resultDate.getDay();
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                    daysCounter--;
+                }
+            }
+        } else {
+            resultDate.setDate(resultDate.getDate() + (numDays * dayIncrement));
+        }
+
+        displayResult(formatDateWithSuffix(resultDate));
+    });
+});

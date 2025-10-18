@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Days and Dates Calculator</title>
+  </head>
+  <body>
+    <div id="ext_container">
+      <div id="main_content">
+        <div id="day_date_tabs">
+          <div id="dates_mode_btn" class="tab_button mode_selected">Dates</div>
+          <div id="days_mode_btn" class="tab_button mode_unselected">Days</div>
+        </div>
+
+        <!-- Dates Mode Form -->
+        <div id="dates_form_container" class="form_container">
+          <div class="form_row form_row_inputs">
+            <div class="input_group">
+              <label for="dates_from_date">From:</label>
+              <input type="date" name="from_date" id="dates_from_date" />
+              <button class="today_btn" data-target="dates_from_date">Today</button>
+            </div>
+            <div class="input_group">
+              <label for="to_date">To:</label>
+              <input type="date" name="to_date" id="to_date" />
+              <button class="today_btn" data-target="to_date">Today</button>
+            </div>
+          </div>
+          <div class="form_row form_row_actions">
+            <div class="preferences">
+              <div class="toggle_container">
+                <label class="toggle_label_text" for="includedate">Include the end date?</label>
+                <label class="toggle_switch">
+                  <input type="checkbox" id="includedate" name="includedate" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div class="toggle_container">
+                <label class="toggle_label_text" for="dates_workday">Count weekdays only?</label>
+                <label class="toggle_switch">
+                  <input type="checkbox" id="dates_workday" name="workday" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+            <div class="submit_container">
+              <button id="dates_submit">Submit</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Days Mode Form (initially hidden) -->
+        <div id="days_form_container" class="form_container hidden">
+          <div class="form_row form_row_inputs">
+            <div class="input_group">
+              <label for="days_from_date">From:</label>
+              <input type="date" name="from_date" id="days_from_date" />
+              <button class="today_btn" data-target="days_from_date">Today</button>
+            </div>
+            <div class="input_group">
+              <label for="add_or_sub">Operation:</label>
+              <select id="add_or_sub">
+                <option value="add">(+) Add</option>
+                <option value="sub">(-) Subtract</option>
+              </select>
+            </div>
+            <div class="input_group">
+              <label for="add_sub_days">Days:</label>
+              <input type="number" name="add_sub_days" id="add_sub_days" />
+            </div>
+          </div>
+          <div class="form_row form_row_actions">
+            <div class="preferences days_preferences">
+              <div class="toggle_container">
+                <label class="toggle_label_text" for="days_workday">Count weekdays only?</label>
+                <label class="toggle_switch">
+                  <input type="checkbox" id="days_workday" name="workday" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+            <div class="submit_container">
+              <button id="days_submit">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="result_container" class="hidden">
+        <!-- Result will be injected here -->
+      </div>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>
