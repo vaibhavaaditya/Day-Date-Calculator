@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Days and Dates Calculator",
-    "version": "2.0.3",
-    "description": "A calendar math tool that lets you find the number of days between two dates and finding a date based on the given number of days",
+    "name": "Dates & Days Calculator",
+    "version": "3.0.0",
+    "description": "Calculate the duration between two dates or find a future/past date by adding/subtracting days, with an option for weekday-only counting as well.",
     "icons":{
         "128": "icons/icon128.png",
         "48": "icons/icon48.png",
@@ -12,5 +12,6 @@
     "action": {
         "default_icon": "icons/icon16.png",
         "default_popup": "popup.html"
-    }
+    },
+    "permissions": ["storage"]
 }

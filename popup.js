@@ -1,10 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Element Caching ---
+    const body = document.body;
+    const themeToggleBtn = document.getElementById('theme_toggle_btn');
+    const sunIcon = document.getElementById('sun_icon');
+    const moonIcon = document.getElementById('moon_icon');
     const datesModeBtn = document.getElementById('dates_mode_btn');
     const daysModeBtn = document.getElementById('days_mode_btn');
     const datesForm = document.getElementById('dates_form_container');
     const daysForm = document.getElementById('days_form_container');
     const resultContainer = document.getElementById('result_container');
+
+    // --- Theme Switching Logic ---
+    const applyTheme = (theme) => {
+        if (theme === 'dark') {
+            body.classList.add('dark-mode');
+            // Show sun icon to switch to light
+            sunIcon.classList.remove('hidden'); 
+            moonIcon.classList.add('hidden');
+        } else {
+            body.classList.remove('dark-mode');
+            // Show moon icon to switch to dark
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden'); 
+        }
+    };
+
+    themeToggleBtn.addEventListener('click', () => {
+        const newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+        chrome.storage.sync.set({ theme: newTheme });
+        applyTheme(newTheme);
+    });
+
+    // Load saved theme on startup
+    chrome.storage.sync.get('theme', (data) => {
+        // Default to light mode if no theme is saved
+        const savedTheme = data.theme || 'light';
+        applyTheme(savedTheme);
+    });
+
 
     // --- Tab Switching Logic ---
     const switchTab = (activeTab) => {
@@ -28,13 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
     daysModeBtn.addEventListener('click', () => switchTab('days'));
 
     // --- Helper Functions ---
-    const getTodayString = () => new Date().toISOString().slice(0, 10);
+    const getTodayString = () => {
+        const today = new Date();
+        // Use local date components to avoid timezone issues with toISOString()
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // getMonth() is 0-indexed
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
 
     const displayResult = (message, isError = false) => {
         resultContainer.innerHTML = message;
-        resultContainer.className = 'result_container'; // Reset classes
+        resultContainer.classList.remove('answer_done', 'answer_error', 'hidden');
         resultContainer.classList.add(isError ? 'answer_error' : 'answer_done');
-        resultContainer.classList.remove('hidden');
     };
 
     const formatDateWithSuffix = (date) => {

@@ -4,16 +4,30 @@
     --primary-color: #007aff;
     --primary-color-light: #e6f2ff;
     --success-color: #34c759;
-    --success-color-light: #eaf9ed;
     --error-color: #ff3b30;
-    --error-color-light: #ffebeb;
+    --border-radius: 6px;
+    --spacing-unit: 8px;
+
+    /* Theme-specific variables */
     --bg-color: #f8f9fa;
     --container-bg: #ffffff;
     --border-color: #dee2e6;
     --text-color: #212529;
     --text-color-muted: #6c757d;
-    --border-radius: 6px;
-    --spacing-unit: 8px;
+    --slider-bg: #ccc;
+    --success-bg: #ddf9e3;
+    --error-bg: #ffebeb;
+}
+
+body.dark-mode {
+    --bg-color: #1c1c1e;
+    --container-bg: #2c2c2e;
+    --border-color: #444446;
+    --text-color: #f2f2f7;
+    --text-color-muted: #8e8e93;
+    --slider-bg: #555;
+    --success-bg: #34c75933;
+    --error-bg: rgba(255, 59, 48, 0.2); /* #ff3b3033 = 20% opacity */
 }
 
 * {
@@ -36,12 +50,62 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: var(--spacing-unit);
+}
+
+/* --- Header --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* --- Theme Toggle --- */
+#theme_toggle_btn {
+    width: 32px;
+    height: 32px;
+    margin-left: calc(var(--spacing-unit) * 2); 
+    margin-right: var(--spacing-unit); 
+    margin-bottom: var(--spacing-unit);
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background-color: var(--container-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    position: relative;
+}
+
+#theme_toggle_btn #sun_icon {
+    color: #f5c518 !important;
+}
+
+#theme_toggle_btn #moon_icon {
+    color: #485461 !important;
+}
+
+/* --- Main Content Area --- */
+#main_content {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Vertical line separator before the theme button */
+#theme_toggle_btn::before {
+    content: '';
+    height: 24px;
+    border-left: 1px solid var(--border-color);
+    margin-top: 10px;
+    margin-left: -5px;
+    position: absolute;
+    left: calc(var(--spacing-unit) * -1.5);
 }
 
 /* --- Tabs --- */
 #day_date_tabs {
     display: flex;
+    flex-grow: 1;
 }
 
 .tab_button{
@@ -52,12 +116,33 @@ body {
     font-size: 15px;
     font-weight: bold;
     height: 36px;
-    border: 1px solid transparent;
     border-bottom: none;
     border-radius: var(--border-radius) var(--border-radius) 0 0;
     cursor: pointer;
     transition: color 0.2s ease;
     position: relative;
+}
+
+/* Vertical separator at the start of the tabs */
+#dates_mode_btn::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    border-left: 1px solid var(--border-color);
+}
+
+/* Vertical separator between the tabs (on the second tab to avoid conflicts) */
+#days_mode_btn::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    border-left: 1px solid var(--border-color);
 }
 
 .tab_button:hover{
@@ -87,7 +172,7 @@ body {
 /* --- Forms --- */
 .form_container{
     display: flex;
-    flex-direction: column; /* Stack the rows vertically */
+    flex-direction: column;
     gap: calc(var(--spacing-unit) * 2);
     width: 100%;
     min-height: 217px;
@@ -99,7 +184,7 @@ body {
 
 .form_row {
     display: flex;
-    align-items: flex-start; /* Align items to the top for consistent label position */
+    align-items: flex-start;
 }
 
 .form_row_inputs {
@@ -108,12 +193,8 @@ body {
 
 .form_row_actions {
     margin-top: 20px;
-    justify-content: space-around; /* Push items inward from the edges */
-    align-items: center; /* Vertically center the preferences and submit button */
-}
-
-.submit_container{
-    /* Styles are now handled by the parent .form_row_actions */
+    justify-content: space-around;
+    align-items: center;
 }
 
 .submit_container > button{
@@ -133,6 +214,7 @@ body {
 .submit_container > button:hover {
     background-color: #0056b3;
 }
+
 .submit_container > button:active {
     transform: scale(0.98);
 }
@@ -142,18 +224,18 @@ body {
     flex-direction: column;
     gap: var(--spacing-unit);
     justify-content: center;
-    min-height: 50px; /* Stabilize height between 1 and 2 checkboxes */
+    min-height: 50px;
 }
 
 .toggle_container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 220px; /* Container width to enforce alignment */
+    width: 220px;
 }
 
 .toggle_label_text {
-    width: 160px; /* Fixed width for the text label */
+    width: 160px;
     text-align: left;
 }
 
@@ -180,7 +262,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: var(--slider-bg);
     transition: .4s;
     border-radius: 24px;
 }
@@ -197,16 +279,11 @@ body {
     border-radius: 50%;
 }
 
-.days_preferences {
-    /* This class is now just for targeting if needed, alignment is handled by .preferences */
-}
-
 .input_group {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--spacing-unit);
-    /* width: 140px; */ /* Width is no longer needed, flexbox will handle it */
 }
 
 .input_group > label {
@@ -216,14 +293,17 @@ body {
 input[type="date"], input[type="number"], select {
     height: 30px;
     width: 125px;
+    color-scheme: light; 
     font-family: var(--font-family);
-    color: var(--text-color-muted);
+    color: var(--text-color); 
     text-align: center;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     background-color: var(--container-bg);
     padding: 0 5px;
 }
+
+body.dark-mode input[type="date"], body.dark-mode input[type="number"], body.dark-mode select { color-scheme: dark; }
 
 input[type="checkbox"]:checked + .slider {
     background-color: var(--primary-color);
@@ -246,7 +326,17 @@ input:focus-visible, select:focus-visible {
     cursor: pointer;
     color: var(--primary-color);
     padding-top: var(--spacing-unit);
+    transition: transform 0.2s ease-out;
 }
+
+.today_btn:hover {
+    transform: translateY(1px);
+}
+
+.today_btn:active {
+    transform: translateY(2px);
+}
+
 
 /* --- Result Container --- */
 #result_container{
@@ -255,7 +345,6 @@ input:focus-visible, select:focus-visible {
     align-items: center;
     font-size: 15px;
     text-align: center;
-    white-space: nowrap; /* Prevent result from wrapping to a new line */
     width: 100%;
     min-height: 90px;
     padding: 20px;
@@ -266,6 +355,7 @@ input:focus-visible, select:focus-visible {
     transform: scaleY(1);
     transform-origin: top;
     transition: opacity 0.3s ease, transform 0.3s ease;
+    margin-top: var(--spacing-unit); /* Add space between form and result */
 }
 
 #result_container.hidden {
@@ -279,14 +369,14 @@ input:focus-visible, select:focus-visible {
 }
 
 .answer_error{
-    background-color: var(--error-color-light);
+    background-color: var(--error-bg);
     border-color: var(--error-color);
     font-weight: 600;
     color: var(--error-color);
 }
 
 .answer_done{
-    background-color: var(--success-color-light);
+    background-color: var(--success-bg);
     border-color: var(--success-color);
 }
 
