@@ -193,7 +193,7 @@ body {
 
 .form_row_actions {
     margin-top: 20px;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -340,21 +340,22 @@ input:focus-visible, select:focus-visible {
 
 /* --- Result Container --- */
 #result_container{
-    display: flex;
-    justify-content: center;
+    width: 100%;
+    min-height: 60px;
+    display: flex; /* Use flexbox for icon and text alignment */
+    justify-content: center; 
     align-items: center;
+    gap: var(--spacing-unit);
     font-size: 15px;
     text-align: center;
-    width: 100%;
-    min-height: 90px;
-    padding: 20px;
+    padding: var(--spacing-unit) calc(var(--spacing-unit) * 2);
     border-radius: var(--border-radius);
-    border: 1px solid transparent;
+    border-left: 4px solid transparent;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     opacity: 1;
     transform: scaleY(1);
     transform-origin: top;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease, min-height 0.3s ease, padding 0.3s ease;
     margin-top: var(--spacing-unit); /* Add space between form and result */
 }
 
@@ -370,19 +371,19 @@ input:focus-visible, select:focus-visible {
 
 .answer_error{
     background-color: var(--error-bg);
-    border-color: var(--error-color);
+    border-left-color: var(--error-color);
     font-weight: 600;
-    color: var(--error-color);
+    color: var(--error-color); /* Apply color to icon and text */
 }
 
 .answer_done{
     background-color: var(--success-bg);
-    border-color: var(--success-color);
+    border-left-color: var(--success-color);
+    color: var(--success-color); /* Apply color to icon and text */
 }
 
-.answer_done span{
+.answer_done .result_value{
     font-weight: bold;
-    color: var(--text-color);
 }
 
 /* Utility */

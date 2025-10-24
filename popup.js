@@ -71,7 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const displayResult = (message, isError = false) => {
-        resultContainer.innerHTML = message;
+        if (isError) {
+            resultContainer.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <span>${message}</span>
+            `;
+        } else {
+            resultContainer.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>Result:</span> <span class="result_value">${message}</span>
+            `;
+        }
+
         resultContainer.classList.remove('answer_done', 'answer_error', 'hidden');
         resultContainer.classList.add(isError ? 'answer_error' : 'answer_done');
     };
@@ -83,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const suffix = (day % 10 === 1 && day !== 11) ? 'st' :
                        (day % 10 === 2 && day !== 12) ? 'nd' :
                        (day % 10 === 3 && day !== 13) ? 'rd' : 'th';
-        return `<span>Result:</span> &nbsp; ${day}<sup>${suffix}</sup> &nbsp; ${month} ${year}`;
+        return `${day}<sup>${suffix}</sup> ${month} ${year}`; // Removed "Result: " and extra &nbsp;
     };
 
     // --- Universal "Today" Button Logic ---
@@ -138,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const dayWord = dayCount === 1 ? 'day' : 'days';
-        displayResult(`<span>Result:</span> &nbsp; ${dayCount} ${dayWord}.`);
+        displayResult(`${dayCount} ${dayWord}.`, false);
     });
 
     // --- "Days" Mode: Add/Subtract Days ---
@@ -169,6 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
             resultDate.setDate(resultDate.getDate() + (numDays * dayIncrement));
         }
 
-        displayResult(formatDateWithSuffix(resultDate));
+        displayResult(formatDateWithSuffix(resultDate), false);
     });
 });
