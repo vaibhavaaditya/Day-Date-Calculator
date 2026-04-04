@@ -1,4 +1,3 @@
-document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Element Caching ---
     const body = document.body;
     const themeToggleBtn = document.getElementById('theme_toggle_btn');
@@ -10,26 +9,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const daysForm = document.getElementById('days_form_container');
     const resultContainer = document.getElementById('result_container');
 
-    // --- Theme Switching Logic ---
-    const applyTheme = (theme) => {
-        if (theme === 'dark') {
-            body.classList.add('dark-mode');
-            // Show sun icon to switch to light
-            sunIcon.classList.remove('hidden'); 
-            moonIcon.classList.add('hidden');
-        } else {
-            body.classList.remove('dark-mode');
-            // Show moon icon to switch to dark
-            sunIcon.classList.add('hidden');
-            moonIcon.classList.remove('hidden'); 
-        }
+    // --- UI Constants ---
+    const ICONS = {
+        copy: `<svg class="copy_icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>`,
+        check: `<svg class="copy_icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`,
+        error: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`,
+        result: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`
     };
 
-    themeToggleBtn.addEventListener('click', () => {
-        const newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
-        chrome.storage.sync.set({ theme: newTheme });
-        applyTheme(newTheme);
-    });
+    // --- Theme Switching Logic ---
+
+    const applyTheme = (theme) => {
+        const isDarkTheme = theme === 'dark';
+
+        body.classList.toggle('dark-mode', isDarkTheme);
+        sunIcon.classList.toggle('hidden', !isDarkTheme);
+        moonIcon.classList.toggle('hidden', isDarkTheme);
+    };
 
     // Load saved theme on startup
     chrome.storage.sync.get('theme', (data) => {
@@ -39,7 +35,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
+    themeToggleBtn.addEventListener('click', () => {
+        const newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+        //Update the storage for default behaviour next time
+        chrome.storage.sync.set({ theme: newTheme });
+        applyTheme(newTheme);
+    });
+
+
+
+
     // --- Tab Switching Logic ---
+
     const switchTab = (activeTab) => {
         const isDatesMode = activeTab === 'dates';
 
@@ -60,6 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
     datesModeBtn.addEventListener('click', () => switchTab('dates'));
     daysModeBtn.addEventListener('click', () => switchTab('days'));
 
+
+
+
+
     // --- Helper Functions ---
     const getTodayString = () => {
         const today = new Date();
@@ -73,20 +84,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const displayResult = (message, isError = false) => {
         if (isError) {
             resultContainer.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                ${ICONS.error}
                 <span>${message}</span>
             `;
         } else {
+            // Sanitize message for copying (remove HTML tags)
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = message;
+            const copyText = tempDiv.textContent || tempDiv.innerText || "";
+
             resultContainer.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                <span>Result:</span> <span class="result_value">${message}</span>
+                <div class="result_content">
+                    ${ICONS.result}
+                    <span>Result:</span> 
+                    <span class="result_value">${message}</span>
+                </div>
+                <button class="copy_btn" title="Copy to clipboard" data-copy-text="${copyText.trim()}" aria-label="Copy result to clipboard">
+                    ${ICONS.copy}
+                </button>
             `;
         }
 
-        resultContainer.classList.remove('answer_done', 'answer_error', 'hidden');
+        // Result container styling
+        resultContainer.classList.remove('answer_done', 'answer_error', 'hidden'); 
         resultContainer.classList.add(isError ? 'answer_error' : 'answer_done');
-    };
-
+    }
+    
     const formatDateWithSuffix = (date) => {
         const day = date.getDate();
         const month = date.toLocaleString('default', { month: 'long' });
@@ -94,13 +117,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const suffix = (day % 10 === 1 && day !== 11) ? 'st' :
                        (day % 10 === 2 && day !== 12) ? 'nd' :
                        (day % 10 === 3 && day !== 13) ? 'rd' : 'th';
-        return `${day}<sup>${suffix}</sup> ${month} ${year}`; // Removed "Result: " and extra &nbsp;
+        return `${day}<sup>${suffix}</sup> ${month} ${year}`; 
     };
+
+    const isWeekend = (date) => {
+        const day = date.getDay();
+        return day === 0 || day === 6;
+    };
+
+    // --- Copy to Clipboard Logic ---
+    resultContainer.addEventListener('click', (e) => {
+        const copyBtn = e.target.closest('.copy_btn');
+        if (!copyBtn) return;
+
+        const textToCopy = copyBtn.dataset.copyText;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            // Provide visual feedback
+            copyBtn.title = 'Copied!';
+            copyBtn.innerHTML = ICONS.check;
+
+            // Revert back after a delay
+            setTimeout(() => {
+                copyBtn.title = 'Copy to clipboard';
+                copyBtn.innerHTML = ICONS.copy;
+            }, 1500);
+        }).catch(err => console.error('Failed to copy: ', err));
+    });
 
     // --- Universal "Today" Button Logic ---
     document.querySelectorAll('.today_btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const targetInputId = e.target.dataset.target;
+        button.addEventListener('click', () => {
+            const targetInputId = button.dataset.target;
             const targetInput = document.getElementById(targetInputId);
             if (targetInput) {
                 targetInput.value = getTodayString();
@@ -133,8 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Loop through the days, excluding the end date for now
         while (currentDate < toDate) {
-            const dayOfWeek = currentDate.getDay(); // 0=Sun, 6=Sat
-            if (!countWorkdays || (dayOfWeek !== 0 && dayOfWeek !== 6)) {
+            if (!countWorkdays || !isWeekend(currentDate)) {
                 dayCount++;
             }
             currentDate.setDate(currentDate.getDate() + 1);
@@ -142,8 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Handle "include end date" separately
         if (includeEndDate) {
-            const endDayOfWeek = toDate.getDay();
-            if (!countWorkdays || (endDayOfWeek !== 0 && endDayOfWeek !== 6)) {
+            if (!countWorkdays || !isWeekend(toDate)) {
                 dayCount++;
             }
         }
@@ -171,8 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let daysCounter = numDays;
             while (daysCounter > 0) {
                 resultDate.setDate(resultDate.getDate() + dayIncrement);
-                const dayOfWeek = resultDate.getDay();
-                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                if (!isWeekend(resultDate)) {
                     daysCounter--;
                 }
             }
@@ -182,4 +226,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
         displayResult(formatDateWithSuffix(resultDate), false);
     });
-});

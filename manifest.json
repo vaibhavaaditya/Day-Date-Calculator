@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Dates & Days Calculator",
-    "version": "3.0.0",
+    "version": "3.1.0",
     "description": "Calculate the duration between two dates or find the date by adding/subtracting days, with an optional weekday-only mode.",
     "icons":{
         "128": "icons/icon128.png",
